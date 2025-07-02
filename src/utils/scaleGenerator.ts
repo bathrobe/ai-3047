@@ -6,46 +6,67 @@ type ScaleContent = {
 
 export function generateScaleContent(userChoices: Record<number, string>): ScaleContent {
   const choiceValues = Object.values(userChoices);
-  const hasCircleChoice = choiceValues.includes('circle');
-  const hasSquareChoice = choiceValues.includes('square');
-  const hasTriangleChoice = choiceValues.includes('triangle');
-  const hasLoveChoice = choiceValues.includes('love');
-  const hasInterestingChoice = choiceValues.includes('interesting');
-  const hasConfusedChoice = choiceValues.includes('confused');
+  
+  // Count choice categories
+  const proTechCount = choiceValues.filter(c => 
+    ['metrics', 'integrate', 'efficiency', 'health', 'embrace', 'artificial', 'yes'].includes(c)
+  ).length;
+  
+  const proHumanCount = choiceValues.filter(c => 
+    ['community', 'monitor', 'jobs', 'privacy', 'preserve', 'natural', 'no'].includes(c)
+  ).length;
+  
+  const balancedCount = choiceValues.filter(c => 
+    ['calibrate', 'sandbox', 'transition', 'choice', 'hybrid', 'both', 'unsure', 'middle', 'warn', 'freedom', 'safety', 'learn'].includes(c)
+  ).length;
+  
+  // Latest significant choices
+  const hasEmbrace = choiceValues.includes('embrace');
+  const hasPreserve = choiceValues.includes('preserve');
+  const hasEfficiency = choiceValues.includes('efficiency');
+  const hasJobs = choiceValues.includes('jobs');
+  const hasStrict = choiceValues.includes('strict');
+  const hasLearn = choiceValues.includes('learn');
 
+  // Determine dominant path
+  const techDominant = proTechCount > proHumanCount && proTechCount > balancedCount;
+  const humanDominant = proHumanCount > proTechCount && proHumanCount > balancedCount;
+  
   return {
-    macro: hasLoveChoice
-      ? "Global cooperation networks flourishing across continents"
-      : hasTriangleChoice
-      ? "Planetary systems undergoing rapid transformation"
-      : hasSquareChoice
-      ? "World infrastructure stabilizing into new patterns"
-      : hasConfusedChoice
-      ? "International tensions creating uncertainty"
-      : "Earth's climate patterns shifting toward balance",
+    macro: techDominant
+      ? `AI integration at 85%. ${hasEfficiency ? 'Automation replacing millions of jobs daily.' : 'Digital consciousness expanding globally.'}`
+      : humanDominant
+      ? `Human autonomy zones growing. ${hasJobs ? 'Work preservation laws enacted worldwide.' : 'Biological heritage protected by law.'}`
+      : hasLearn
+      ? "Hacker collectives now run global security. Chaos becoming order."
+      : hasStrict
+      ? "Security state tightening. Freedom index dropping to 43%."
+      : "World in flux. Integration at 67%, resistance at 33%.",
 
-    meso: hasLoveChoice
-      ? "Communities building stronger bonds and shared resources"
-      : hasInterestingChoice
-      ? "Local networks expanding with curious experimentation"
-      : hasTriangleChoice
-      ? "Regional power structures reshaping rapidly"
-      : hasSquareChoice
-      ? "Cities organizing into efficient districts"
-      : hasConfusedChoice
-      ? "Neighborhoods struggling with changing dynamics"
-      : "Social groups adapting to new circumstances",
+    meso: hasEmbrace
+      ? "Your district converting to thought-sharing network. Privacy extinct."
+      : hasPreserve
+      ? "Neighborhood forming analog sanctuary. Tech-free zones expanding."
+      : hasLearn
+      ? "Local youth recruited for cyber defense. Crime down 67%."
+      : techDominant
+      ? "847 minds merged in district mesh. Individual thought fading."
+      : humanDominant
+      ? "Community centers bustling. Human connection revival movement growing."
+      : "Your area split: 423 connected, 424 resisting. Tension rising.",
 
-    micro: hasLoveChoice
-      ? "Individuals finding deeper purpose and connection"
-      : hasInterestingChoice
-      ? "People exploring new possibilities with enthusiasm"
-      : hasTriangleChoice
-      ? "Personal transformations accelerating dramatically"
-      : hasSquareChoice
-      ? "Daily routines becoming more structured and purposeful"
-      : hasConfusedChoice
-      ? "Personal identity questions creating inner conflict"
-      : "Individual awareness gradually expanding"
+    micro: hasEmbrace
+      ? "Your thoughts merging with collective. Self dissolving into we."
+      : hasPreserve
+      ? "You feel more human today. Dreams return after years of silence."
+      : hasEfficiency
+      ? "Productivity up 340%. Empathy markers showing steady decline."
+      : hasJobs
+      ? "You saved 47 jobs today. Sleep comes easier now."
+      : techDominant
+      ? "Neural optimization complete. Emotions simplified to binary states."
+      : humanDominant
+      ? "Augmentations powered down. Rediscovering forgotten sensations."
+      : "Mind caught between worlds. Neither fully human nor machine."
   };
 }
